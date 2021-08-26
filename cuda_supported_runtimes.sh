@@ -1,6 +1,10 @@
 #! /bin/bash
+
+OS=rhel7
+ARCH=x86_64
+
 BASEDIR=$(dirname $(realpath $0))
-AVAILABLE=$(echo $BASEDIR/drivers/*/ | xargs -n1 basename | sort -V)
+AVAILABLE=$(echo $BASEDIR/drivers/$OS/$ARCH/*/ | xargs -n1 basename | sort -V)
 LATEST=$(echo "$AVAILABLE" | tail -n1)
 
 VERBOSE=""
@@ -28,13 +32,13 @@ Options:
 }
 
 while getopts "d:hlv" ARG; do
-  case ${ARG} in
+  case $ARG in
     "d")
-      DRIVERS="${OPTARG}"
-      if [ "${DRIVERS}" == "latest" ]; then
+      DRIVERS="$OPTARG"
+      if [ "$DRIVERS" == "latest" ]; then
         DRIVERS=$LATEST
       fi
-      if ! [ -d "$BASEDIR/drivers/${DRIVERS}" ]; then
+      if ! [ -d "$BASEDIR/drivers/$OS/$ARCH/$DRIVERS" ]; then
         echo "$(basename $0): Invalid drivers version '$DRIVERS'"
         echo
         echo "Valid drivers versions are:"
@@ -54,7 +58,7 @@ while getopts "d:hlv" ARG; do
       VERBOSE="-v"
       ;;
     *)
-      echo "$(basename $0): Invalid option '${ARG}'"
+      echo "$(basename $0): Invalid option '$ARG'"
       echo
       usage
       exit 1
@@ -63,7 +67,7 @@ while getopts "d:hlv" ARG; do
 done
 
 if [ "$DRIVERS" ]; then
-  export LD_LIBRARY_PATH=$(dirname $(realpath $0))/drivers/${DRIVERS}:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=$(dirname $(realpath $0))/drivers/$DRIVERS:$LD_LIBRARY_PATH
 fi
 
 for TEST in $(ls bin/test-*); do
