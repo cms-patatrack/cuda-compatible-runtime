@@ -70,6 +70,6 @@ if [ "$DRIVERS" ]; then
   export LD_LIBRARY_PATH=$(dirname $(realpath $0))/drivers/$DRIVERS:$LD_LIBRARY_PATH
 fi
 
-for TEST in $(ls bin/test-*); do
+for TEST in $(ls ${BASEDIR}/bin/test-*); do
   $TEST $VERBOSE
 done
