@@ -13,7 +13,7 @@ define build-target
 bin/test-$(1): CUDA_BASE:=/cvmfs/patatrack.cern.ch/externals/x86_64/rhel7/nvidia/cuda-$(1)
 bin/test-$(1): test.c
 	@mkdir -p bin
-	/usr/bin/gcc -std=c99 -O2 -Wall $$< -I $$(CUDA_BASE)/include -L $$(CUDA_BASE)/lib64 -l cudart_static -l cuda -ldl -lrt -pthread -static-libgcc -o $$@
+	/usr/bin/gcc -std=c99 -O2 -Wall $$< -I $$(CUDA_BASE)/include -L $$(CUDA_BASE)/lib64 -L $$(CUDA_BASE)/lib64/stubs -l cudart_static -l cuda -ldl -lrt -pthread -static-libgcc -o $$@
 
 endef
 
