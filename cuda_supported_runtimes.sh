@@ -67,7 +67,7 @@ while getopts "d:hlv" ARG; do
 done
 
 if [ "$DRIVERS" ]; then
-  export LD_LIBRARY_PATH=$(dirname $(realpath $0))/drivers/$DRIVERS:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=$(dirname $(realpath $0))/drivers/$OS/$ARCH/$DRIVERS:$LD_LIBRARY_PATH
 fi
 
 for TEST in $(ls ${BASEDIR}/bin/test-*); do
