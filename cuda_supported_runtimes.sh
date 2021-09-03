@@ -4,7 +4,7 @@ OS=rhel7
 ARCH=x86_64
 
 BASEDIR=$(dirname $(realpath $0))
-AVAILABLE=$(echo $BASEDIR/drivers/$OS/$ARCH/*/ | xargs -n1 basename | sort -V)
+AVAILABLE=$([ -d $BASEDIR/drivers/$OS/$ARCH/ ] && ls $BASEDIR/drivers/$OS/$ARCH/ | sort -V)
 LATEST=$(echo "$AVAILABLE" | tail -n1)
 
 VERBOSE=""
