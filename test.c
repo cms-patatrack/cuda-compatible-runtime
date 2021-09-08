@@ -5,7 +5,7 @@
 #include <cuda_runtime.h>
 
 void usage(const char* program_name) {
-  printf("Usage: %s [-v]\n\nOptions:\n  -h        Print a help message and exits.\n  -v        Be more verbose.", program_name);
+  printf("Usage: %s [-v]\n\nOptions:\n  -h        Print a help message and exits.\n  -v        Be more verbose.\n", program_name);
 }
 
 int main(int argc, const char* argv[]) {
