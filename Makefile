@@ -34,8 +34,11 @@ bin:
 define build-target
 bin/test-$(1): CUDA_BASE:=$(CUDA_VERSIONED_BASE)/cuda-$(1)
 bin/test-$(1): test.cu
+ifneq ("$(wildcard $(CUDA_VERSIONED_BASE)/cuda-$(1))","")
 	$(CUDA_COMPILER_BASE)/bin/nvcc -std=c++11 -O2 -g $(CUDA_ARCH_FLAGS) $$< -I $(CUDA_COMPILER_BASE)/include -L $$(CUDA_BASE)/lib64 -L $$(CUDA_BASE)/lib64/stubs --cudart static -ldl -lrt --use-local-env --compiler-bindir /usr/bin/g++ --compiler-options '-Wall -pthread -static-libgcc -static-libstdc++' -o $$@
-
+else
+	@echo "CUDA $(1) is not available for $(OS) on $(ARCH)"
+endif
 endef
 
 $(foreach VERSION,$(RUNTIME_VERSIONS),$(eval $(call build-target,$(VERSION))))
