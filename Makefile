@@ -1,11 +1,17 @@
 .PHONY: all clean
 
+# aarch64, ppc64le, x86_64
+ARCH:=$(shell uname -m)
+
+# rhel7, rhel8, unknown
+OS:=$(shell if [ -f /etc/redhat-release ]; then if cat /etc/redhat-release | grep -q 'release 7'; then echo 'rhel7'; elif cat /etc/redhat-release | grep -q 'release 8'; then echo 'rhel8'; else echo 'unknown'; fi; else echo 'unknown'; fi)
+
 # CUDA versions
 COMPILER_VERSION:=11.5.0
 RUNTIME_VERSIONS:=10.0.130 10.1.243 10.2.89 11.0.228 11.1.105 11.2.2 11.3.1 11.4.3 11.5.0
 
 # CUDA installation
-CUDA_VERSIONED_BASE:=/cvmfs/patatrack.cern.ch/externals/x86_64/rhel7/nvidia
+CUDA_VERSIONED_BASE:=/cvmfs/patatrack.cern.ch/externals/$(ARCH)/$(OS)/nvidia
 CUDA_COMPILER_BASE:=$(CUDA_VERSIONED_BASE)/cuda-$(COMPILER_VERSION)
 
 # CUDA hardware architecture
