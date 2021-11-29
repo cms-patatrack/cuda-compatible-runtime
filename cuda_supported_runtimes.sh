@@ -1,7 +1,18 @@
 #! /bin/bash
 
-OS=rhel7
-ARCH=x86_64
+# aarch64, ppc64le, x86_64
+ARCH:=$(uname -m)
+
+# rhel7, rhel8, unknown
+if ! [ -f /etc/redhat-release ]; then
+  OS='unknown'
+elif cat /etc/redhat-release | grep -q 'release 7'; then
+  OS='rhel7'
+elif cat /etc/redhat-release | grep -q 'release 8'; then
+  OS='rhel8'
+else
+  OS='unknown'
+fi
 
 BASEDIR=$(dirname $(realpath $0))
 AVAILABLE=$([ -d $BASEDIR/drivers/$OS/$ARCH/ ] && ls $BASEDIR/drivers/$OS/$ARCH/ | sort -V)
