@@ -1,21 +1,7 @@
 #! /bin/bash
 
-# aarch64, ppc64le, x86_64
-ARCH:=$(uname -m)
-
-# rhel7, rhel8, unknown
-if ! [ -f /etc/redhat-release ]; then
-  OS='unknown'
-elif cat /etc/redhat-release | grep -q 'release 7'; then
-  OS='rhel7'
-elif cat /etc/redhat-release | grep -q 'release 8'; then
-  OS='rhel8'
-else
-  OS='unknown'
-fi
-
 BASEDIR=$(dirname $(realpath $0))
-AVAILABLE=$([ -d $BASEDIR/drivers/$OS/$ARCH/ ] && ls $BASEDIR/drivers/$OS/$ARCH/ | sort -V)
+AVAILABLE=$([ -d $BASEDIR/drivers ] && ls -d $BASEDIR/drivers/*/ | xargs -n1 basename | sort -V)
 LATEST=$(echo "$AVAILABLE" | tail -n1)
 
 VERBOSE=""
@@ -49,7 +35,7 @@ while getopts "d:hlv" ARG; do
       if [ "$DRIVERS" == "latest" ]; then
         DRIVERS=$LATEST
       fi
-      if ! [ -d "$BASEDIR/drivers/$OS/$ARCH/$DRIVERS" ]; then
+      if ! [ -d "$BASEDIR/drivers/$DRIVERS" ]; then
         echo "$(basename $0): Invalid drivers version '$DRIVERS'"
         echo
         echo "Valid drivers versions are:"
@@ -78,7 +64,7 @@ while getopts "d:hlv" ARG; do
 done
 
 if [ "$DRIVERS" ]; then
-  export LD_LIBRARY_PATH=$(dirname $(realpath $0))/drivers/$OS/$ARCH/$DRIVERS:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=$BASEDIR/drivers/$DRIVERS:$LD_LIBRARY_PATH
 fi
 
 for TEST in $(ls ${BASEDIR}/bin/test-*); do

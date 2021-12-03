@@ -24,9 +24,9 @@ TARGETS:=$(foreach VERSION,$(RUNTIME_VERSIONS),bin/test-$(VERSION))
 all: $(TARGETS)
 
 clean:
-	rm -rf bin
+	rm -rf bin drivers
 
-$(TARGETS): bin
+$(TARGETS): bin drivers
 
 bin:
 	@mkdir -p bin
@@ -42,3 +42,6 @@ endif
 endef
 
 $(foreach VERSION,$(RUNTIME_VERSIONS),$(eval $(call build-target,$(VERSION))))
+
+drivers: $(CUDA_VERSIONED_BASE)/compat
+	rsync -ar $(CUDA_VERSIONED_BASE)/compat/* drivers
