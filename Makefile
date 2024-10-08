@@ -4,7 +4,7 @@
 ARCH:=$(shell uname -m)
 
 # rhel7, rhel8, unknown
-OS:=$(shell if [ -f /etc/redhat-release ]; then if cat /etc/redhat-release | grep -q 'release 7'; then echo 'rhel7'; elif cat /etc/redhat-release | grep -q 'release 8'; then echo 'rhel8'; else echo 'unknown'; fi; else echo 'unknown'; fi)
+OS:=$(shell if [ -f /etc/redhat-release ]; then if cat /etc/redhat-release | grep -q 'release 7'; then echo 'rhel7'; elif cat /etc/redhat-release | grep -q 'release 8'; then echo 'rhel8'; elif cat /etc/redhat-release | grep -q 'release 9'; then echo 'rhel9'; else echo 'unknown'; fi; else echo 'unknown'; fi)
 $(info OS detected: $(OS))
 
 # system compiler
