@@ -74,4 +74,4 @@ endef
 $(foreach VERSION,$(RUNTIME_VERSIONS),$(eval $(call build-target,$(VERSION))))
 
 drivers: $(CUDA_VERSIONED_BASE)/compat
-	rsync -ar $(CUDA_VERSIONED_BASE)/compat/* drivers
+	rsync -ar --no-group $(CUDA_VERSIONED_BASE)/compat/* drivers
